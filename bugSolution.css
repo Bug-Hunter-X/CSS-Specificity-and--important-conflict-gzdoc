@@ -1,0 +1,19 @@
+The solution avoids the use of `!important` and uses a more precise selector to target the specific element:
+
+```css
+.container {
+  font-size: 16px;
+}
+
+.container p {
+  font-size: 18px;
+}
+
+.container p.special {
+  font-size: 14px;
+}
+
+/* No need for .container .special rule */
+```
+
+By removing the `.container .special` selector and ensuring that the `p.special` selector is sufficient to target the elements with the desired `font-size`, we avoid the specificity and `!important` conflict. This also improves the maintainability and readability of the CSS code.
