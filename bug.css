@@ -1,0 +1,25 @@
+The following CSS code snippet demonstrates an unusual issue related to specificity and inheritance:
+
+```css
+.container {
+  font-size: 16px;
+}
+
+.container p {
+  font-size: 18px;
+}
+
+.container p.special {
+  font-size: 14px !important;
+}
+
+.container .special {
+  font-size: 20px;
+}
+```
+
+The problem arises when an element has multiple classes and the inheritance order conflicts with the `!important` declaration.  While `.container p.special` has higher specificity, the `!important` declaration on `font-size: 14px` is overridden by the later `font-size: 20px` in `.container .special` even though the latter has lower specificity. This non-intuitive behavior can be hard to debug.
+
+This is because the browser evaluates the styles sequentially. When it encounters `font-size: 14px !important`, it marks it as high priority. However, the next rule `.container .special` with `font-size: 20px` isn't directly targeting `p.special`, but the `.special` class is still present, and the CSS engine will re-evaluate the `font-size` property.  Due to its later definition and the absence of `!important`, the 20px rule takes precedence.
+
+This counter-intuitive outcome stems from the way CSS specificity and the `!important` declaration are combined. It's easy to miss this if the class structure isn't fully understood.
